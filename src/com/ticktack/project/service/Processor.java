@@ -61,8 +61,8 @@ public class Processor {
     private String[][] toMove(Type type) {
         while (true) {
             String xVal = handler.read();
-            String yVal = handler.read();
             int x = service.stringIsNumeric(xVal) - 1;
+            String yVal = handler.read();
             int y = service.stringIsNumeric(yVal) - 1;
             if (x <= 2 && x >= 0 && y >= 0 && y <= 2 && gameField.getGameField()[x][y].equals(Massages.EMPTY_CELL)) {
                 if (type == Type.CROSS) {

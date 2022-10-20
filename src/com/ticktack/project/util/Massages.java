@@ -1,7 +1,7 @@
 package com.ticktack.project.util;
 
 public class Massages {
-    public static final String WELCOME = "Добро пожаловать в игру \"Кретики-Нолики\"!";
+    public static final String WELCOME = "Добро пожаловать в игру \"Крестики-Нолики\"!";
     public static final String INPUT_CROSS_PLAYER_NAME = "Введите имя игрока, играющего за Крестик.";
     public static final String INPUT_ZERO_PLAYER_NAME = "Введите имя игрока, играющего за Нолик.";
     public static final String EMPTY_CELL = "[ ]";
