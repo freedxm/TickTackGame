@@ -5,7 +5,7 @@ import com.ticktack.project.util.Massages;
 
 public class GameField {
     public static final int SIDE = 3;
-    public String[][] gameField = new String[SIDE][SIDE];
+    private String[][] gameField = new String[SIDE][SIDE];
     private Handler handler;
     public GameField(Handler handler){
         this.handler = handler;

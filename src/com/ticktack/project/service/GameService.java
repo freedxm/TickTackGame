@@ -8,7 +8,6 @@ import com.ticktack.project.util.Massages;
 import static com.ticktack.project.model.GameField.SIDE;
 import static com.ticktack.project.model.Type.CROSS;
 import static com.ticktack.project.model.Type.ZERO;
-import static com.ticktack.project.service.Processor.input;
 import static com.ticktack.project.util.Massages.WRONG_CP_NAME;
 
 public class GameService {
@@ -110,7 +109,7 @@ public class GameService {
             }
             else{
                 handler.write(Massages.WRONG_CRDS);
-                string = input.nextLine();
+                string = handler.read();
             }
         }
     }

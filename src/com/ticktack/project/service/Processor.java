@@ -12,14 +12,11 @@ import static com.ticktack.project.model.Type.CROSS;
 import static com.ticktack.project.model.Type.ZERO;
 
 public class Processor {
-    Player crossPlayer;
-    Player zeroPlayer;
-    GameField gameField;
-    GameService service;
-    Handler handler = new Handler(new Scanner(System.in));
-
-    public static Scanner input = new Scanner(System.in);
-
+    private Player crossPlayer;
+    private Player zeroPlayer;
+    private GameField gameField;
+    private GameService service;
+    private Handler handler = new Handler(new Scanner(System.in));
 
     public void run() {
         handler.write(Massages.WELCOME);
@@ -46,7 +43,7 @@ public class Processor {
         crossPlayer =  new Player(CROSS, service.getName(CROSS));
         zeroPlayer = new Player(ZERO, service.getName(ZERO));
     }
-    public void playersMove() {
+    private void playersMove() {
         handler.write(Massages.START);
         gameField.printGameField(gameField.getGameField());
         Player movingPlayer = crossPlayer;
@@ -61,7 +58,7 @@ public class Processor {
         }
     }
 
-    public String[][] toMove(Type type) {
+    private String[][] toMove(Type type) {
         while (true) {
             String xVal = handler.read();
             String yVal = handler.read();
