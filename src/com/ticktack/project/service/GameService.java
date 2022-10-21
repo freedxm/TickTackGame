@@ -1,6 +1,6 @@
 package com.ticktack.project.service;
 
-import com.ticktack.project.consolehandler.Handler;
+import com.ticktack.project.handler.ConsoleHandler;
 import com.ticktack.project.model.GameField;
 import com.ticktack.project.model.Type;
 import com.ticktack.project.util.Massages;
@@ -12,9 +12,9 @@ import static com.ticktack.project.util.Massages.WRONG_CP_NAME;
 
 public class GameService {
     private GameField gameField;
-    private Handler handler;
+    private ConsoleHandler handler;
 
-    public GameService(GameField gameField, Handler handler){
+    public GameService(GameField gameField, ConsoleHandler handler){
         this.gameField = gameField;
         this.handler = handler;
     }
@@ -28,22 +28,21 @@ public class GameService {
         }
         name = handler.read();
         char[] arrayName = name.toCharArray();
-        if (arrayName.length < 2 || Character.isDigit(arrayName[0])) {
             while (arrayName.length < 2 || Character.isDigit(arrayName[0])) {
-                System.out.println(WRONG_CP_NAME);
+                handler.write(WRONG_CP_NAME);
                 name = handler.read();
                 arrayName = name.toCharArray();
             }
-        }
         return name;
     }
 
     public Type returnWinner() {
-        Type type = null;
-        if (checkDiagonal(gameField.getGameField()) == CROSS || checkX() == CROSS || checkY() == CROSS) {
-            type = CROSS;
-        } else if (checkDiagonal(gameField.getGameField()) == ZERO || checkX() == ZERO || checkY() == ZERO) {
-            type = ZERO;
+        Type type = checkDiagonal(gameField.getGameField());
+        if(type == null){
+            type = checkX();
+        }
+        if(type == null){
+            checkY();
         }
         return type;
     }
@@ -60,14 +59,24 @@ public class GameService {
                 }
             }
             if (xCounter == 3) {
-                return CROSS;
+                break;
             } else if (oCounter == 3) {
-                return ZERO;
+                break;
             }
             xCounter = 0;
             oCounter = 0;
         }
-        return null;
+        return checkTypeCounters(xCounter, oCounter);
+    }
+
+    private Type checkTypeCounters(int xCounter, int oCounter){
+        if (xCounter == 3) {
+            return CROSS;
+        } else if (oCounter == 3) {
+            return ZERO;
+        }else{
+            return null;
+        }
     }
 
     public Type checkY() {
@@ -93,12 +102,32 @@ public class GameService {
     }
 
     public Type checkDiagonal(String[][] gameField) {
-        if (gameField[0][0].equals(gameField[1][1]) && gameField[1][1].equals(gameField[2][2]) && gameField[2][2].equals(Massages.CROSS) || gameField[0][2].equals(gameField[1][1]) && gameField[1][1].equals(gameField[2][0]) && gameField[2][0].equals(Massages.CROSS)) {
-            return Type.CROSS;
-        } else if (gameField[0][0].equals(gameField[1][1]) && gameField[1][1].equals(gameField[2][2]) && gameField[2][2].equals(Massages.ZERO) || gameField[0][2].equals(gameField[1][1]) && gameField[1][1].equals(gameField[2][0]) && gameField[2][0].equals(Massages.ZERO)) {
-            return Type.ZERO;
+        int xCounter = 0;
+        int oCounter = 0;
+        for (int i = 0; i < SIDE; i++) {
+            if(gameField[i][i].equals(Massages.CROSS)){
+                xCounter++;
+            }else if(gameField[i][i].equals(Massages.ZERO)){
+                oCounter++;
+            }
         }
-        return null;
+        if(checkTypeCounters(xCounter, oCounter) != null){
+            return checkTypeCounters(xCounter, oCounter);
+        }
+        xCounter = 0;
+        oCounter = 0;
+        for (int x = 0, y = 2; x < SIDE && y >= 0; x++, y--) {
+            if(gameField[x][y].equals(Massages.CROSS)){
+                xCounter++;
+            }else if(gameField[x][y].equals(Massages.ZERO)){
+                oCounter++;
+            }
+        }
+        if(checkTypeCounters(xCounter, oCounter) != null){
+            return checkTypeCounters(xCounter, oCounter);
+        }else{
+            return null;
+        }
     }
 
     public int stringIsNumeric(String string){

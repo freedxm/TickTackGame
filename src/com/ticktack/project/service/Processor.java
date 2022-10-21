@@ -1,12 +1,10 @@
 package com.ticktack.project.service;
 
-import com.ticktack.project.consolehandler.Handler;
+import com.ticktack.project.handler.ConsoleHandler;
 import com.ticktack.project.model.GameField;
 import com.ticktack.project.model.Player;
 import com.ticktack.project.model.Type;
 import com.ticktack.project.util.Massages;
-
-import java.util.Scanner;
 
 import static com.ticktack.project.model.Type.CROSS;
 import static com.ticktack.project.model.Type.ZERO;
@@ -16,12 +14,12 @@ public class Processor {
     private Player zeroPlayer;
     private GameField gameField;
     private GameService service;
-    private Handler handler = new Handler(new Scanner(System.in));
+    private ConsoleHandler handler;
+    private DrawService drawService;
 
     public void run() {
-        handler.write(Massages.WELCOME);
         init();
-        gameField.fillGameField(gameField.getGameField());
+        drawService.fillGameField(gameField.getGameField());
         playersMove();
         Type winnerType = service.returnWinner();
         checkWinner(winnerType);
@@ -38,18 +36,21 @@ public class Processor {
         }
     }
     private void init(){
+        handler =  new ConsoleHandler();
+        handler.write(Massages.WELCOME);
         gameField = new GameField(handler);
+        drawService = new DrawService(gameField, handler);
         service = new GameService(gameField, handler);
         crossPlayer =  new Player(CROSS, service.getName(CROSS));
         zeroPlayer = new Player(ZERO, service.getName(ZERO));
     }
     private void playersMove() {
         handler.write(Massages.START);
-        gameField.printGameField(gameField.getGameField());
+        drawService.printGameField(gameField.getGameField());
         Player movingPlayer = crossPlayer;
-        while (!gameField.boardIsFull() && service.returnWinner() == null) {
+        while (!drawService.boardIsFull() && service.returnWinner() == null) {
             handler.write(movingPlayer.getName() + Massages.PLAYER_MOVES);
-            gameField.printGameField(toMove(movingPlayer.getType()));
+            drawService.printGameField(toMove(movingPlayer.getType()));
             if (movingPlayer.getType() == CROSS) {
                 movingPlayer = zeroPlayer;
             } else if (movingPlayer.getType() == ZERO) {
