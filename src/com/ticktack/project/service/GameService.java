@@ -91,14 +91,14 @@ public class GameService {
                 }
             }
             if (xCounter == 3) {
-                return CROSS;
+                break;
             } else if (oCounter == 3) {
-                return ZERO;
+                break;
             }
             xCounter = 0;
             oCounter = 0;
         }
-        return null;
+        return checkTypeCounters(xCounter, oCounter);
     }
 
     public Type checkDiagonal(String[][] gameField) {
@@ -123,11 +123,7 @@ public class GameService {
                 oCounter++;
             }
         }
-        if(checkTypeCounters(xCounter, oCounter) != null){
-            return checkTypeCounters(xCounter, oCounter);
-        }else{
-            return null;
-        }
+        return checkTypeCounters(xCounter, oCounter);
     }
 
     public int stringIsNumeric(String string){
