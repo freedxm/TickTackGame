@@ -2,15 +2,15 @@ package com.ticktack.project.service;
 
 import com.ticktack.project.handler.ConsoleHandler;
 import com.ticktack.project.model.GameField;
-import com.ticktack.project.util.Massages;
+import com.ticktack.project.util.Messages;
 
 import static com.ticktack.project.model.GameField.SIDE;
 
 public class DrawService {
-    private GameField gameField;
-    private ConsoleHandler handler;
+    private final GameField gameField;
+    private final ConsoleHandler handler;
 
-    public DrawService(GameField gameField, ConsoleHandler handler){
+    public DrawService(GameField gameField, ConsoleHandler handler) {
         this.gameField = gameField;
         this.handler = handler;
     }
@@ -27,16 +27,16 @@ public class DrawService {
     public void fillGameField(String[][] gameField) {
         for (int x = 0; x < SIDE; x++) {
             for (int y = 0; y < SIDE; y++) {
-                gameField[x][y] = Massages.EMPTY_CELL;
+                gameField[x][y] = Messages.EMPTY_CELL;
             }
         }
     }
 
-    public boolean boardIsFull() {
+    public boolean boardIsFull(String[][] gameField) {
         int counterOfFilledCells = 0;
         for (int x = 0; x < SIDE; x++) {
             for (int y = 0; y < SIDE; y++) {
-                if (!gameField.getGameField()[x][y].equals(Massages.EMPTY_CELL)) {
+                if (!gameField[x][y].equals(Messages.EMPTY_CELL)) {
                     counterOfFilledCells++;
                 }
             }
